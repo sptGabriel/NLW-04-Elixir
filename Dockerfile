@@ -18,6 +18,6 @@ COPY lib lib
 
 COPY . .
 
-COPY docker-entrypoint.sh docker-entrypoint.sh
+COPY ./.docker/docker-entrypoint.sh docker-entrypoint.sh
 
 EXPOSE 4000

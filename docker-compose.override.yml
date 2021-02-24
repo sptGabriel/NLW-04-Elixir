@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:13.0
+    environment: 
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  spiritpay:
+    image: spiritpay:local
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    stdin_open: true
+    command: /bin/sh docker-entrypoint.sh
+    tty: true
+    env_file:
+      - .env
+    ports:
+      - "4000:4000"
+      - "4002:4002"
+    volumes:
+      - /app/assets/node_modules
+      - ./assets:/app/assets
+      - ./config:/app/config:ro
+      - ./lib:/app/lib:ro
+      - ./priv:/app/priv
+      - ./test:/app/test:ro
+      - ./mix.exs:/app/mix.exs:ro
+
+volumes:
+  db-data:
