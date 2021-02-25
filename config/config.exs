@@ -18,6 +18,9 @@ config :spiritpay, SpiritpayWeb.Endpoint,
   pubsub_server: Spiritpay.PubSub,
   live_view: [signing_salt: "RbWuPUMK"]
 
+config :spiritpay, Spiritpay.Repo,
+  migration_primary_key: [type: :binary_id],
+  migration_foreign_key: [type: :binary_id]
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
