@@ -5,6 +5,6 @@ defmodule SpiritpayWeb.FallbackController do
     conn
     |> put_status(:bad_request)
     |> put_view(SpiritpayWeb.ErrorView)
-    |> render("400.json", result)
+    |> render("400.json", result: result)
   end
 end
