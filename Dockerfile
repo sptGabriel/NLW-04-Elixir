@@ -20,4 +20,6 @@ COPY . .
 
 COPY ./.docker/docker-entrypoint.sh docker-entrypoint.sh
 
+RUN mix deps.compile --force bcrypt_elixir
+
 EXPOSE 4000
