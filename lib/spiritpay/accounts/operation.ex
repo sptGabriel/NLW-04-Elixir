@@ -1,5 +1,5 @@
 defmodule Spiritpay.Accounts.Operation do
-  alias Ecto.Multi
+  alias Ecto.{Multi}
 
   alias Spiritpay.{Account}
 
@@ -29,24 +29,24 @@ defmodule Spiritpay.Accounts.Operation do
   defp operation(%Account{balance: balance}, value, operation) do
     value
     |> Decimal.cast()
-    |> maybe_positive?()
     |> handle_cast(balance, operation)
   end
 
-  defp maybe_positive?({:ok, value}) do
-    case Decimal.compare(value, 0) do
-      :lt -> {:error, :negative_number}
-      :gt -> {:ok, value}
-    end
-  end
-  defp maybe_positive?(error), do: error
+  defguard is_decimal_positive(value)
+    when is_map(value) and
+         value.__struct__ == Decimal and
+         value.sign == 1
 
-  defp handle_cast({:error, :negative_number}, _balance, _operation) do
-    {:error, "Number must be positive"}
-  end
-  defp handle_cast({:ok, value}, balance, :deposit), do: Decimal.add(balance, value)
-  defp handle_cast({:ok, value}, balance, :withdraw), do: Decimal.sub(balance, value)
-  defp handle_cast(:error, _balance, _operation), do: {:error, "Invalid operation!"}
+  defp handle_cast({:ok, value}, balance, :deposit)
+  when is_decimal_positive(value),
+  do: Decimal.add(balance, value)
+
+  defp handle_cast({:ok, value}, balance, :withdraw)
+  when is_decimal_positive(value),
+  do: Decimal.sub(balance, value)
+
+  defp handle_cast(_error, _balance, _),
+  do: {:error, "Number must be positive decimal"}
 
   defp update_account({:error, _reason} = error, _repo, _account), do: error
 
