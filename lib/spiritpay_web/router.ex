@@ -14,6 +14,7 @@ defmodule SpiritpayWeb.Router do
 
     post "/accounts/:id/deposit", AccountsController, :deposit
     post "/accounts/:id/withdraw", AccountsController, :withdraw
+    post "/accounts/transaction", AccountsController, :transaction
 
   end
 
