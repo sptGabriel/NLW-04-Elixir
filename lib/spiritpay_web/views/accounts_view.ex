@@ -3,7 +3,6 @@ defmodule SpiritpayWeb.AccountsView do
   alias Spiritpay.Accounts.Transactions.Response, as: TransactionResponse
 
   def render("update.json", %{account: %Account{id: account_id, balance: balance}}) do
-    IO.inspect(balance)
     %{
       message: "Balance changed successfully",
       account: %{

@@ -21,6 +21,10 @@ config :spiritpay, SpiritpayWeb.Endpoint,
 config :spiritpay, Spiritpay.Repo,
   migration_primary_key: [type: :binary_id],
   migration_foreign_key: [type: :binary_id]
+
+config :spiritpay, :basic_auth,
+  username: "spt",
+  password: "xd"
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -1,17 +1,32 @@
 defmodule SpiritpayWeb.Router do
   use SpiritpayWeb, :router
 
+  import Plug.BasicAuth
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug :basic_auth, Application.compile_env(:spiritpay, :basic_auth)
+  end
+
+  #scope "/api", SpiritpayWeb do
+  #  pipe_through :api
+
+  #  get "/:filename", WelcomeController, :index
+
+  #  post "/users", UsersController, :create
+
+  #  post "/accounts/:id/deposit", AccountsController, :deposit
+  #  post "/accounts/:id/withdraw", AccountsController, :withdraw
+  #  post "/accounts/transaction", AccountsController, :transaction
+
+  #end
+
   scope "/api", SpiritpayWeb do
-    pipe_through :api
-
-    get "/:filename", WelcomeController, :index
-
+    pipe_through [:api, :auth]
     post "/users", UsersController, :create
-
     post "/accounts/:id/deposit", AccountsController, :deposit
     post "/accounts/:id/withdraw", AccountsController, :withdraw
     post "/accounts/transaction", AccountsController, :transaction
