@@ -6,10 +6,11 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :spiritpay, Spiritpay.Repo,
-  username: "postgres",
-  password: "12345",
-  database: "spiritpay-dev",
-  hostname: "localhost",
+  username: System.get_env("DB_USER"),
+  password: System.get_env("DB_PASS"),
+  hostname: System.get_env("DB_HOST"),
+  database: "spiritpay-test",
+  hostname: System.get_env("DB_HOST"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
